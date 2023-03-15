@@ -6,6 +6,13 @@ import java.util.Objects;
 
 public class Robot implements Competitor{
 
+    boolean isInGame = true;
+    int maxRun;
+    int maxJump;
+    public Robot(int maxRun, int maxJump){
+        this.maxRun = maxRun;
+        this.maxJump = maxJump;
+    }
     public void run(){
         System.out.println("Робот бежит...");
     }
@@ -15,13 +22,25 @@ public class Robot implements Competitor{
 
     @Override
     public void doExercise(Exercise exercise) {
-        if (Objects.equals(exercise.getValue(), 2)){
-            jump();
-            System.out.println("Робот не смог прыгнуть\n");
-        }
-        else {
-            run();
-            System.out.println("Робот не смог пробежать\n");
+        if(isInGame) {
+            if (Objects.equals(exercise.getValue(), 2)) {
+                jump();
+                if (maxJump < exercise.getLength()) {
+                    System.out.println("Робот не смог прыгнуть\nРобот выбыл\n");
+                    isInGame = false;
+                } else {
+                    System.out.println("Робот прыгнул\n");
+                }
+
+            } else {
+                run();
+                if (maxRun < exercise.getLength()) {
+                    System.out.println("Робот не смог пробежать\nРобот выбыл\n");
+                    isInGame = false;
+                } else {
+                    System.out.println("Робот пробежал\n");
+                }
+            }
         }
     }
 }
